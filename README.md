@@ -1,6 +1,6 @@
 # 2020 Presidential Election
 
-Simple visualization of 2020 presidential election.
+Simple visualization of 2020 presidential election. Polled every minute using [swr](https://swr.vercel.app/).
 
 ## 🛠 Installing
 
