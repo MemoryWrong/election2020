@@ -5,8 +5,12 @@ import {
     ModalHeader,
     ModalBody,
     ModalCloseButton,
-    Text
+    Text,
+    Heading,
+    ModalFooter,
+    Button
   } from "@chakra-ui/core"
+import { CheckCircleIcon } from '@chakra-ui/icons'
 
 function StateModal({ isOpen, onClose, selectedState }) {
     console.log('ss', selectedState)
@@ -17,9 +21,13 @@ function StateModal({ isOpen, onClose, selectedState }) {
             <ModalHeader>{selectedState.name}</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-                <Text>{selectedState.electTotal} electotal votes</Text>
-                <Text>{selectedState.eevp}% expected vote</Text>
+                <Text>{selectedState.electTotal} electoral votes</Text>
+                <Text>{selectedState.eevp}% { selectedState.winner ? `Expected vote` : `of expected vote in` }</Text>
+                { selectedState.winner && <Heading as="h4" size="md" textAlign="center" mt={4}><CheckCircleIcon color="green.500" /> {selectedState.winner.fullName}</Heading> }
             </ModalBody>
+            <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
             </ModalContent>
         </Modal>
     )
