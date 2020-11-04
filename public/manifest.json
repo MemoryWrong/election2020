@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "2020 Presidential Elections",
+  "name": "Simple map that visualizes votes per state.",
   "icons": [
     {
       "src": "favicon.ico",

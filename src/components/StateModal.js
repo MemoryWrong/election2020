@@ -26,10 +26,10 @@ function StateModal({ isOpen, onClose, selectedState }) {
             </ModalBody>
             <ModalFooter>
             <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
+            </ModalFooter>
             </ModalContent>
         </Modal>
-    )
+    );
 }
 
 export default StateModal;
