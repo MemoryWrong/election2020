@@ -44,7 +44,7 @@ function App() {
   
       if (winner) {
         states[state] = {
-          fill: candidates[winner.candidateID].fullName === 'Donald Trump' ? '#C53030' : '#2B6CB0'
+          fill: candidates[winner.candidateID].fullName === 'Donald Trump' ? '#E53E3E' : '#3182CE'
         }
       } else {
         const { candidateID } = stateResults.sort((a, b) => b.voteCount - a.voteCount)[0];
@@ -75,7 +75,7 @@ function App() {
     <Center>
       <Heading as="h2" size="xl" textAlign="center" >2020 Presidential Election</Heading>
       <Heading as="h3" size="lg" mt={2} textAlign="center">
-        <Text as="span" color="blue.600">{bidenElectWon}</Text> Biden | Trump <Text as="span" color="red.600">{trumpElectWon}</Text>
+        <Text as="span" color="blue.500">{bidenElectWon}</Text> Biden | Trump <Text as="span" color="red.500">{trumpElectWon}</Text>
       </Heading>
       <USAMap states={states} onStateClick={onStateClick} />
       <StateModal isOpen={isOpen} onClose={onClose} selectedState={selectedState} />
