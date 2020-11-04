@@ -2,8 +2,8 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { Flex, Text, Heading, Spinner, useDisclosure } from "@chakra-ui/core"
 
-import USAMap from './USAMap';
-import StateModal from './StateModal';
+import USAMap from './components/USAMap';
+import StateModal from './components/StateModal';
 import { fetchCandidates, fetchResults } from './api';
 
 function Center({ children }) {
@@ -34,7 +34,7 @@ function App() {
   let bidenElectWon = 0;
 
   if (!candidates || !results) {
-    return <Center><Spinner size="xl" /></Center>
+    return <Center><Spinner color="blue.600" size="xl" /></Center>
   }
 
   if (candidates && results) {
@@ -46,6 +46,11 @@ function App() {
         states[state] = {
           fill: candidates[winner.candidateID].fullName === 'Donald Trump' ? '#C53030' : '#2B6CB0'
         }
+      } else {
+        const { candidateID } = stateResults.sort((a, b) => b.voteCount - a.voteCount)[0];
+        states[state] = {
+          fill: candidates[candidateID].fullName === 'Donald Trump' ? '#FED7D7' : '#BEE3F8'
+        }
       }
     });
 
@@ -55,6 +60,7 @@ function App() {
 
   const onStateClick = (event) => {
     const { summary } = results[event.target.dataset.name][0];
+
     const winner = summary.results.find(i => i.hasOwnProperty('winner'));
     setSelectedState({
       name: event.target.dataset.name,

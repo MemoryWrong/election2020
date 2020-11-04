@@ -13,9 +13,8 @@ import {
 import { CheckCircleIcon } from '@chakra-ui/icons'
 
 function StateModal({ isOpen, onClose, selectedState }) {
-    console.log('ss', selectedState)
     return (
-        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <Modal size="xs" isOpen={isOpen} onClose={onClose} isCentered>
             <ModalOverlay />
             <ModalContent>
             <ModalHeader>{selectedState.name}</ModalHeader>
