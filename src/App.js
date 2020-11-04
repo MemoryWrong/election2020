@@ -27,14 +27,14 @@ const App = () => {
     refreshWhenHidden: true
   });
 
+  if (!candidates || !results) {
+    return <Center><Spinner color="blue.600" size="xl" /></Center>
+  }
+
   const states = {};
   let trumpElectWon = 0;
   let bidenElectWon = 0;
 
-  if (!candidates || !results) {
-    return <Center><Spinner color="blue.600" size="xl" /></Center>
-  }
-  
   Object.keys(results).forEach((state) => {
     const stateResults = results[state][0].summary.results;
     const winner = stateResults.find(i => i.hasOwnProperty('winner'));
