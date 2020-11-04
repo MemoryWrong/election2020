@@ -1,12 +1,14 @@
 import useSWR from 'swr';
+import { Flex, Heading } from "@chakra-ui/core"
+
 import USAMap from './USAMap';
-import './App.css';
 import { fetchCandidates, fetchResults } from './api';
 
 function App() {
   const { data: candidates } = useSWR('candidates', fetchCandidates);
   const { data: results } = useSWR('results', fetchResults, {
-    refreshInterval: 60000
+    refreshInterval: 30000,
+    refreshWhenHidden: true
   });
 
   if (!candidates || !results) return <div>Loading...</div>
@@ -28,9 +30,10 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <Flex direction="column" justify="center" align="center" height="100vh">
+      <Heading as="h2" size="2xl" mb={5}>2020 Presidential Elections</Heading>
       <USAMap states={states} />
-    </div>
+    </Flex>
   );
 }
 
