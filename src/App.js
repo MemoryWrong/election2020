@@ -6,8 +6,8 @@ import { fetchCandidates, fetchResults } from './api';
 
 function Center({ children }) {
   return <Flex direction="column" justify="center" align="center" height="100vh">
-    {children}
-  </Flex>
+  {children}
+</Flex>
 }
 
 function App() {
@@ -46,8 +46,8 @@ function App() {
 
   return (
     <Center>
-      <Heading as="h2" size="xl">2020 Presidential Election</Heading>
-      <Heading as="h3" size="lg" mt={2}>
+      <Heading as="h2" size="xl" textAlign="center" >2020 Presidential Election</Heading>
+      <Heading as="h3" size="lg" mt={2} textAlign="center">
         <Text as="span" color="blue.600">{bidenElectWon}</Text> Biden | Trump <Text as="span" color="red.600">{trumpElectWon}</Text>
       </Heading>
       <USAMap states={states} />
