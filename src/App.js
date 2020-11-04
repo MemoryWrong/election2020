@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import useSWR from 'swr';
-import { Flex, Text, Heading, Spinner } from "@chakra-ui/core"
+import { Flex, Text, Heading, Spinner, useDisclosure } from "@chakra-ui/core"
 
 import USAMap from './USAMap';
+import StateModal from './StateModal';
 import { fetchCandidates, fetchResults } from './api';
 
 function Center({ children }) {
@@ -11,6 +13,13 @@ function Center({ children }) {
 }
 
 function App() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedState, setSelectedState] = useState({
+    name: null,
+    electTotal: 0,
+    eevp: 0,
+    winner: null
+  });
   const { data: candidates } = useSWR('candidates', fetchCandidates);
   const { data: results } = useSWR('results', fetchResults, {
     refreshInterval: 60000,
@@ -44,13 +53,26 @@ function App() {
     trumpElectWon = results.US[0].summary.results.find(i => i.candidateID === 'US8639').electWon;
   }
 
+  const onStateClick = (event) => {
+    const { summary } = results[event.target.dataset.name][0];
+    const winner = summary.results.find(i => i.hasOwnProperty('winner'));
+    setSelectedState({
+      name: event.target.dataset.name,
+      electTotal: summary.electTotal,
+      eevp: summary.eevp,
+      winner: winner ? candidates[winner.candidateID] : null
+    })
+    onOpen();
+  };
+
   return (
     <Center>
       <Heading as="h2" size="xl" textAlign="center" >2020 Presidential Election</Heading>
       <Heading as="h3" size="lg" mt={2} textAlign="center">
         <Text as="span" color="blue.600">{bidenElectWon}</Text> Biden | Trump <Text as="span" color="red.600">{trumpElectWon}</Text>
       </Heading>
-      <USAMap states={states} />
+      <USAMap states={states} onStateClick={onStateClick} />
+      <StateModal isOpen={isOpen} onClose={onClose} selectedState={selectedState} />
     </Center>
   );
 }
