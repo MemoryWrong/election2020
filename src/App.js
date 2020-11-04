@@ -34,27 +34,25 @@ const App = () => {
   if (!candidates || !results) {
     return <Center><Spinner color="blue.600" size="xl" /></Center>
   }
-
-  if (candidates && results) {
-    Object.keys(results).forEach((state) => {
-      const stateResults = results[state][0].summary.results;
-      const winner = stateResults.find(i => i.hasOwnProperty('winner'));
   
-      if (winner) {
-        states[state] = {
-          fill: candidates[winner.candidateID].fullName === 'Donald Trump' ? '#C53030' : '#2B6CB0'
-        }
-      } else {
-        const { candidateID } = stateResults.sort((a, b) => b.voteCount - a.voteCount)[0];
-        states[state] = {
-          fill: candidates[candidateID].fullName === 'Donald Trump' ? '#FED7D7' : '#BEE3F8'
-        }
-      }
-    });
+  Object.keys(results).forEach((state) => {
+    const stateResults = results[state][0].summary.results;
+    const winner = stateResults.find(i => i.hasOwnProperty('winner'));
 
-    bidenElectWon = results.US[0].summary.results.find(i => i.candidateID === 'US1036').electWon;
-    trumpElectWon = results.US[0].summary.results.find(i => i.candidateID === 'US8639').electWon;
-  }
+    if (winner) {
+      states[state] = {
+        fill: candidates[winner.candidateID].fullName === 'Donald Trump' ? '#C53030' : '#2B6CB0'
+      }
+    } else {
+      const { candidateID } = stateResults.sort((a, b) => b.voteCount - a.voteCount)[0];
+      states[state] = {
+        fill: candidates[candidateID].fullName === 'Donald Trump' ? '#FED7D7' : '#BEE3F8'
+      }
+    }
+  });
+
+  bidenElectWon = results.US[0].summary.results.find(i => i.candidateID === 'US1036').electWon;
+  trumpElectWon = results.US[0].summary.results.find(i => i.candidateID === 'US8639').electWon;
 
   const onStateClick = (event) => {
     const { summary } = results[event.target.dataset.name][0];
