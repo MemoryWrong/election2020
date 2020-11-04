@@ -7,13 +7,13 @@ import StateModal from './components/StateModal';
 import { fetchCandidates, fetchResults } from './api';
 import statesHash from './states_hash.json';
 
-function Center({ children }) {
+const Center = ({ children }) => {
   return <Flex direction="column" justify="center" align="center" height="100vh">
     {children}
   </Flex>
 }
 
-function App() {
+const App = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedState, setSelectedState] = useState({
     name: null,

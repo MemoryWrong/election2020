@@ -1,7 +1,7 @@
 import ReactUSAMap from "react-usa-map";
 import { useBreakpointValue, Box } from "@chakra-ui/core"
 
-export default function Map({ states, onStateClick }) {
+const USAMap = ({ states, onStateClick }) => {
     const width = useBreakpointValue([200, 350, 500, 600]);
   
     return (
@@ -10,3 +10,5 @@ export default function Map({ states, onStateClick }) {
       </Box>
     );
 }
+
+export default USAMap;
