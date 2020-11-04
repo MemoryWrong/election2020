@@ -5,6 +5,7 @@ import { Flex, Text, Heading, Spinner, useDisclosure } from "@chakra-ui/core"
 import USAMap from './components/USAMap';
 import StateModal from './components/StateModal';
 import { fetchCandidates, fetchResults } from './api';
+import statesHash from './states_hash.json';
 
 function Center({ children }) {
   return <Flex direction="column" justify="center" align="center" height="100vh">
@@ -60,7 +61,7 @@ function App() {
 
     const winner = summary.results.find(i => i.hasOwnProperty('winner'));
     setSelectedState({
-      name: event.target.dataset.name,
+      name: statesHash[event.target.dataset.name],
       electTotal: summary.electTotal,
       eevp: summary.eevp,
       winner: winner ? candidates[winner.candidateID] : null
