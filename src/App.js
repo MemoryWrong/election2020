@@ -48,7 +48,7 @@ function App() {
     <Center>
       <Heading as="h2" size="xl">2020 Presidential Election</Heading>
       <Heading as="h3" size="lg" mt={2}>
-        <Text as="span" color="blue.600">{bidenElectWon}</Text> Biden | Trump <span style={{ color: '#C53030' }}>{trumpElectWon}</span>
+        <Text as="span" color="blue.600">{bidenElectWon}</Text> Biden | Trump <Text as="span" color="red.600">{trumpElectWon}</Text>
       </Heading>
       <USAMap states={states} />
     </Center>
