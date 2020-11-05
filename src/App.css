@@ -1,3 +1,8 @@
+:root {
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+}
+
 path {
   pointer-events: all;
 }
@@ -35,4 +40,24 @@ p {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   letter-spacing: 0.025em;
+}
+
+.state {
+  font-weight: bold;
+  font-size: var(--text-base);
+}
+
+.elect-total {
+  font-size: var(--text-sm);
+}
+
+.eevp {
+  font-style: italic;
+  font-size: var(--text-sm);
+}
+
+.winner-name {
+  font-weight: bold;
+  font-size: var(--text-base);
+  color: #2f855a;
 }
