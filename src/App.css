@@ -1,0 +1,22 @@
+path {
+    pointer-events: all;
+}
+path:hover {
+    opacity: 0.50;
+    cursor: pointer;
+}
+
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+h2 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    margin-bottom: 0px;
+}

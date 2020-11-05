@@ -1,7 +1,13 @@
-path {
-    pointer-events: all;
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
+
+body,html {
+    margin: 0;
+    padding: 0;
 }
-path:hover {
-    opacity: 0.50;
-    cursor: pointer;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
 }

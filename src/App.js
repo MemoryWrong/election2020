@@ -1,45 +1,33 @@
 import { useState, Suspense } from 'react';
-import { Flex, Spinner, useDisclosure } from "@chakra-ui/core"
+import ReactTooltip from "react-tooltip";
 
-import USAMap from './components/USAMap';
-import StateModal from './components/StateModal';
-import Header from './components/Header';
+import './App.css';
+import Title from './components/Title';
 
-const Center = ({ children }) => {
-  return <Flex direction="column" justify="center" align="center" height="100vh">
-    {children}
-  </Flex>
-}
+import MapChart from './components/MapChart';
 
-const LoadingIndicator = () => {
-  return <Center>
-    <Spinner color="blue.600" size="xl" />
-  </Center>;
+const Center = ({children}) => {
+  return <div className="center-content">{children}</div>
 }
 
 const App = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedState, setSelectedState] = useState({
-    name: null,
-    electTotal: 0,
-    eevp: 0,
-    winner: null
-  });
-
-  const onStateClick = (data) => {
-    setSelectedState(data)
-    onOpen();
-  };
+  const [content, setContent] = useState(null);
 
   return (
     <Center>
-      <Suspense fallback={<LoadingIndicator />}>
+      <Suspense fallback={<>Loading...</>}>
         <Suspense fallback={<>Loading...</>}>
-          <Header />
+          <Title />
         </Suspense>
-        <USAMap onStateClick={onStateClick} />
+        <MapChart setTooltipContent={setContent} />
       </Suspense>
-      <StateModal isOpen={isOpen} onClose={onClose} selectedState={selectedState} />
+      <ReactTooltip>
+        { content && <><p style={{ fontWeight: 'bold' }}>{content.name}</p>
+        <p>{content.electTotal} electoral votes</p>
+        <p>{content.eevp}% {content.winner ? `Expected vote` : `of expected vote in`}</p>
+        { content.winner && <p>Winner: {content.winner.fullName}</p> }
+        </> }
+      </ReactTooltip>
     </Center>
   );
 }
