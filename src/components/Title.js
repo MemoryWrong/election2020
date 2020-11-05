@@ -1,6 +1,7 @@
 import useSWR from 'swr';
 
 import { fetchResults } from '../api';
+import { RED, BLUE } from '../constants';
 
 const Header = () => {
   const { data: results } = useSWR('results', fetchResults, {
@@ -18,8 +19,8 @@ const Header = () => {
 
   return (
     <h2 className="title">
-      <span style={{ color: '#2B6CB0' }}>{bidenElectWon}</span> Biden | Trump{' '}
-      <span style={{ color: '#C53030' }}>{trumpElectWon}</span>
+      <span style={{ color: BLUE }}>{bidenElectWon}</span> Biden | Trump{' '}
+      <span style={{ color: RED }}>{trumpElectWon}</span>
     </h2>
   );
 };

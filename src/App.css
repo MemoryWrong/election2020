@@ -43,7 +43,7 @@ p {
 }
 
 .state {
-  font-weight: bold;
+  font-weight: 500;
   font-size: var(--text-base);
 }
 
@@ -54,10 +54,11 @@ p {
 .eevp {
   font-style: italic;
   font-size: var(--text-sm);
+  color: #718096;
 }
 
 .winner-name {
-  font-weight: bold;
+  font-weight: 600;
   font-size: var(--text-base);
   color: #2f855a;
 }

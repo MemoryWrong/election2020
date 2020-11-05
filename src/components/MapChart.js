@@ -12,6 +12,7 @@ import ReactTooltip from 'react-tooltip';
 
 import { fetchCandidates, fetchResults } from '../api';
 import allStates from '../data/allstates.json';
+import * as constants from '../constants';
 
 const geoUrl = 'https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json';
 
@@ -38,6 +39,7 @@ const MapChart = ({ setTooltipContent }) => {
   });
 
   useEffect(() => {
+    // This rebuild is needed for tooltip styles
     ReactTooltip.rebuild();
   }, []);
 
@@ -51,16 +53,16 @@ const MapChart = ({ setTooltipContent }) => {
 
     if (winner) {
       return candidates[winner.candidateID].fullName === 'Donald Trump'
-        ? '#C53030'
-        : '#2B6CB0';
+        ? constants.RED
+        : constants.BLUE;
     }
 
     const { candidateID } = stateResults.sort(
       (a, b) => b.voteCount - a.voteCount
     )[0];
     return candidates[candidateID].fullName === 'Donald Trump'
-      ? '#FED7D7'
-      : '#BEE3F8';
+      ? constants.LIGHT_RED
+      : constants.LIGHT_BLUE;
   };
 
   const handleMouseEnter = (geoId, name) => {
