@@ -1,39 +1,47 @@
 import { useState, Suspense } from 'react';
-import ReactTooltip from 'react-tooltip';
+import { Flex, Spinner, useDisclosure } from "@chakra-ui/core"
 
-import './App.css';
-import Title from './components/Title';
+import USAMap from './components/USAMap';
+import StateModal from './components/StateModal';
+import Header from './components/Header';
 
-import MapChart from './components/MapChart';
+const Center = ({ children }) => {
+  return <Flex direction="column" justify="center" align="center" height="100vh">
+    {children}
+  </Flex>
+}
+
+const LoadingIndicator = () => {
+  return <Center>
+    <Spinner color="blue.600" size="xl" />
+  </Center>;
+}
 
 const App = () => {
-  const [content, setContent] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedState, setSelectedState] = useState({
+    name: null,
+    electTotal: 0,
+    eevp: 0,
+    winner: null
+  });
+
+  const onStateClick = (data) => {
+    setSelectedState(data)
+    onOpen();
+  };
 
   return (
-    <div className="container">
-      <Suspense fallback={<div>Fetching results...</div>}>
+    <Center>
+      <Suspense fallback={<LoadingIndicator />}>
         <Suspense fallback={<>Loading...</>}>
-          <Title />
+          <Header />
         </Suspense>
-        <MapChart setTooltipContent={setContent} />
+        <USAMap onStateClick={onStateClick} />
       </Suspense>
-      <ReactTooltip className="tooltip" textColor="#000" backgroundColor="#FFF">
-        {content && (
-          <>
-            <p className="state">{content.name}</p>
-            <p className="elect-total">{content.electTotal} electoral votes</p>
-            <p className="eevp">
-              {content.eevp}%{' '}
-              {content.winner ? `Expected vote` : `of expected vote in`}
-            </p>
-            {content.winner && (
-              <p className="winner-name">Winner: {content.winner.fullName}</p>
-            )}
-          </>
-        )}
-      </ReactTooltip>
-    </div>
+      <StateModal isOpen={isOpen} onClose={onClose} selectedState={selectedState} />
+    </Center>
   );
-};
+}
 
 export default App;
