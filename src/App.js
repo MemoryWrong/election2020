@@ -1,47 +1,39 @@
 import { useState, Suspense } from 'react';
-import { Flex, Spinner, useDisclosure } from "@chakra-ui/core"
+import ReactTooltip from 'react-tooltip';
 
-import USAMap from './components/USAMap';
-import StateModal from './components/StateModal';
-import Header from './components/Header';
+import './App.css';
+import Title from './components/Title';
 
-const Center = ({ children }) => {
-  return <Flex direction="column" justify="center" align="center" height="100vh">
-    {children}
-  </Flex>
-}
-
-const LoadingIndicator = () => {
-  return <Center>
-    <Spinner color="blue.600" size="xl" />
-  </Center>;
-}
+import MapChart from './components/MapChart';
 
 const App = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedState, setSelectedState] = useState({
-    name: null,
-    electTotal: 0,
-    eevp: 0,
-    winner: null
-  });
-
-  const onStateClick = (data) => {
-    setSelectedState(data)
-    onOpen();
-  };
+  const [content, setContent] = useState(null);
 
   return (
-    <Center>
-      <Suspense fallback={<LoadingIndicator />}>
+    <div className="container">
+      <Suspense fallback={<div>Fetching results...</div>}>
         <Suspense fallback={<>Loading...</>}>
-          <Header />
+          <Title />
         </Suspense>
-        <USAMap onStateClick={onStateClick} />
+        <MapChart setTooltipContent={setContent} />
       </Suspense>
-      <StateModal isOpen={isOpen} onClose={onClose} selectedState={selectedState} />
-    </Center>
+      <ReactTooltip className="tooltip" textColor="#000" backgroundColor="#FFF">
+        {content && (
+          <>
+            <p className="state">{content.name}</p>
+            <p className="elect-total">{content.electTotal} electoral votes</p>
+            <p className="eevp">
+              {content.eevp}%{' '}
+              {content.winner ? `Expected vote` : `of expected vote in`}
+            </p>
+            {content.winner && (
+              <p className="winner-name">Winner: {content.winner.fullName}</p>
+            )}
+          </>
+        )}
+      </ReactTooltip>
+    </div>
   );
-}
+};
 
 export default App;
