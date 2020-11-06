@@ -107,6 +107,7 @@ const MapChart = ({ setTooltipContent }) => {
             {geographies.map((geo) => {
               const centroid = geoCentroid(geo);
               const cur = allStates.find((s) => s.val === geo.id);
+              const fillColor = getStateWinnerColor(geo.id);
               return (
                 <g key={geo.rsmKey + '-name'}>
                   {cur &&
@@ -118,7 +119,12 @@ const MapChart = ({ setTooltipContent }) => {
                           y="2"
                           fontSize={14}
                           textAnchor="middle"
-                          fill="#FFF"
+                          fill={
+                            fillColor === constants.LIGHT_RED ||
+                            fillColor === constants.LIGHT_BLUE
+                              ? '#000'
+                              : '#FFF'
+                          }
                         >
                           {cur.id}
                         </text>
