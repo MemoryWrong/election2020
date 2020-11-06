@@ -19,17 +19,28 @@ const App = () => {
       </Suspense>
       <ReactTooltip className="tooltip" textColor="#000" backgroundColor="#FFF">
         {content && (
-          <>
-            <p className="state">{content.name}</p>
-            <p className="elect-total">{content.electTotal} electoral votes</p>
-            <p className="eevp">
-              {content.eevp}%{' '}
-              {content.winner ? `Expected vote` : `of expected vote in`}
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             {content.winner && (
-              <p className="winner-name">Winner: {content.winner}</p>
+              <img
+                src={content.imgUrl}
+                alt="president_image"
+                style={{ width: 80 }}
+              />
             )}
-          </>
+            <div style={{ marginLeft: 7 }}>
+              <p className="state">{content.name}</p>
+              <p className="elect-total">
+                {content.electTotal} electoral votes
+              </p>
+              <p className="eevp">
+                {content.eevp}%{' '}
+                {content.winner ? `Expected vote` : `of expected vote in`}
+              </p>
+              {content.winner && (
+                <p className="winner-name">Winner: {content.winner}</p>
+              )}
+            </div>
+          </div>
         )}
       </ReactTooltip>
     </div>

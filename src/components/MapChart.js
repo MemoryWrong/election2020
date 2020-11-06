@@ -68,6 +68,7 @@ const MapChart = ({ setTooltipContent }) => {
       electTotal: race.electoral_votes,
       eevp: race.eevp,
       winner: winner ? winner.name_display : null,
+      imgUrl: winner ? winner.img_url : null,
     });
     ReactTooltip.rebuild();
   };
