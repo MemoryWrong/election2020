@@ -10,7 +10,7 @@ import {
 import useSWR from 'swr';
 import ReactTooltip from 'react-tooltip';
 
-import { fetchCandidates, fetchResults } from '../api';
+import { fetchResults } from '../api';
 import allStates from '../data/allstates.json';
 import * as constants from '../constants';
 
@@ -29,10 +29,9 @@ const offsets = {
 };
 
 const MapChart = ({ setTooltipContent }) => {
-  const { data: candidates } = useSWR('candidates', fetchCandidates, {
-    suspense: true,
-  });
-  const { data: results } = useSWR('results', fetchResults, {
+  const {
+    data: { races },
+  } = useSWR('nytimes-results', fetchResults, {
     refreshInterval: 60000,
     refreshWhenHidden: true,
     suspense: true,
@@ -45,36 +44,30 @@ const MapChart = ({ setTooltipContent }) => {
 
   const getStateWinnerColor = (geoId) => {
     const cur = allStates.find((s) => s.val === geoId);
+    const race = races.find((i) => i.state_id === cur.id);
 
-    if (!results[cur.id]) return null;
+    if (!race) return;
 
-    const stateResults = results[cur.id][0].summary.results;
-    const winner = stateResults.find((i) => i.hasOwnProperty('winner'));
+    const winner = race.candidates.find((i) => i.winner);
 
     if (winner) {
-      return candidates[winner.candidateID].fullName === 'Donald Trump'
-        ? constants.RED
-        : constants.BLUE;
+      return winner.last_name === 'Trump' ? constants.RED : constants.BLUE;
     }
 
-    const { candidateID } = stateResults.sort(
-      (a, b) => b.voteCount - a.voteCount
-    )[0];
-    return candidates[candidateID].fullName === 'Donald Trump'
-      ? constants.LIGHT_RED
-      : constants.LIGHT_BLUE;
+    const { last_name } = race.candidates.sort((a, b) => b.votes - a.votes)[0];
+    return last_name === 'Trump' ? constants.LIGHT_RED : constants.LIGHT_BLUE;
   };
 
-  const handleMouseEnter = (geoId, name) => {
+  const handleMouseEnter = (geoId) => {
     const cur = allStates.find((s) => s.val === geoId);
-    const { summary } = results[cur.id][0];
-    const winner = summary.results.find((i) => i.hasOwnProperty('winner'));
+    const race = races.find((i) => i.state_id === cur.id);
+    const winner = race.candidates.find((i) => i.winner);
 
     setTooltipContent({
-      name,
-      electTotal: summary.electTotal,
-      eevp: summary.eevp,
-      winner: winner ? candidates[winner.candidateID] : null,
+      name: race.state_name,
+      electTotal: race.electoral_votes,
+      eevp: race.eevp,
+      winner: winner ? winner.name_display : null,
     });
     ReactTooltip.rebuild();
   };
@@ -84,32 +77,33 @@ const MapChart = ({ setTooltipContent }) => {
       <Geographies geography={geoUrl}>
         {({ geographies }) => (
           <>
-            {geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                stroke="#FFF"
-                geography={geo}
-                fill="#DDD"
-                style={{
-                  default: {
-                    fill: getStateWinnerColor(geo.id),
-                    outline: 'none',
-                  },
-                  hover: {
-                    fill: getStateWinnerColor(geo.id),
-                    outline: 'none',
-                  },
-                  pressed: {
-                    fill: getStateWinnerColor(geo.id),
-                    outline: 'none',
-                  },
-                }}
-                onMouseEnter={() =>
-                  handleMouseEnter(geo.id, geo.properties.name)
-                }
-                onMouseLeave={() => setTooltipContent(null)}
-              />
-            ))}
+            {geographies.map((geo) => {
+              const fillColor = getStateWinnerColor(geo.id);
+              return (
+                <Geography
+                  key={geo.rsmKey}
+                  stroke="#FFF"
+                  geography={geo}
+                  fill="#DDD"
+                  style={{
+                    default: {
+                      fill: fillColor,
+                      outline: 'none',
+                    },
+                    hover: {
+                      fill: fillColor,
+                      outline: 'none',
+                    },
+                    pressed: {
+                      fill: fillColor,
+                      outline: 'none',
+                    },
+                  }}
+                  onMouseEnter={() => handleMouseEnter(geo.id)}
+                  onMouseLeave={() => setTooltipContent(null)}
+                />
+              );
+            })}
             {geographies.map((geo) => {
               const centroid = geoCentroid(geo);
               const cur = allStates.find((s) => s.val === geo.id);

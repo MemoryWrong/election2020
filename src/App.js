@@ -11,7 +11,7 @@ const App = () => {
 
   return (
     <div className="container">
-      <Suspense fallback={<div>Fetching results...</div>}>
+      <Suspense fallback={<div>Fetching data from NY Times...</div>}>
         <Suspense fallback={<>Loading...</>}>
           <Title />
         </Suspense>
@@ -27,7 +27,7 @@ const App = () => {
               {content.winner ? `Expected vote` : `of expected vote in`}
             </p>
             {content.winner && (
-              <p className="winner-name">Winner: {content.winner.fullName}</p>
+              <p className="winner-name">Winner: {content.winner}</p>
             )}
           </>
         )}
